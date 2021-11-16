@@ -1,32 +1,48 @@
 import random
 
-def compare_numbers(number, user_guess):
-    ## your code here
-    return cowbull
+print("Let's play a game of Cowbull!",
+    "\nI will generate a number, and you have to guess the numbers one digit at a time.",
+    "\nFor every number that exists in the sequence but is in wrong place, you get a cow. For every one in the right place, you get a bull.",
+    "\nThe game ends when you get 4 bulls!",
+    "\nType exit at any prompt to exit." ) #explanation
 
-playing = True #gotta play the game
-number = str(random.randint(0,9999)) #random 4 digit number
-guesses = 0
-print number
+#gotta play the game
+playing = True
 
-print("Let's play a game of Cowbull!") #explanation
-print("I will generate a number, and you have to guess the numbers one digit at a time.")
-print("For every number that exists in the sequence but is in wrong place, you get a cow. For every one in the right place, you get a bull.")
-print("The game ends when you get 4 bulls!")
-print("Type exit at any prompt to exit.")
 
-while playing:
-    user_guess = raw_input("Give me your best guess!")
-    if user_guess == "exit":
+# Returns list of digits  of a number
+
+def LiOfDigit(num):
+    return [int(i) for i in str(num)]
+
+generateNum = random.randint(1000, 9999)
+print(generateNum)
+
+# Returns number of bulls and ows
+
+def BullsAndCows(num, guess):
+    bull_cow = [0, 0]
+    num_li = LiOfDigit(num)
+    guess_li = LiOfDigit(guess)
+    for i, j in zip(num_li, guess_li):
+        if j in num_li:
+            if j == i:
+                bull_cow[0] += 1
+            else:
+                bull_cow[1] += 1
+    return bull_cow
+
+
+
+while playing == True:
+    guess = input("Enter your guess: ")
+    if guess == "exit":
         break
-    cowbullcount = compare_numbers(number,user_guess)
-    guesses+=1
+    bull_cow = BullsAndCows(generateNum, guess)
+    print(f"{bull_cow[0]} bulls, {bull_cow[1]} cows")
+    if bull_cow[0] == 4:
+        print("You guessed right!")
+        break
+else:
+    print(f"You ran out of tries. Number was {generateNum}")
 
-    print("You have "+ str(cowbullcount[0]) + " cows, and " + str(cowbullcount[1]) + " bulls.")
-
-    if cowbullcount[1]==4:
-        playing = False
-        print("You win the game after " + str(guesses) + "! The number was "+str(number))
-        break #redundant exit
-    else:
-        print("Your guess isn't quite right, try again.")
